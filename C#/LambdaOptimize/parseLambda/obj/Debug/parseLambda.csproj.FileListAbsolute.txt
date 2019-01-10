@@ -1,0 +1,7 @@
+d:\vs_Projects\parseLambda\parseLambda\bin\Debug\parseLambda.exe.config
+d:\vs_Projects\parseLambda\parseLambda\bin\Debug\parseLambda.exe
+d:\vs_Projects\parseLambda\parseLambda\bin\Debug\parseLambda.pdb
+d:\vs_Projects\parseLambda\parseLambda\obj\Debug\parseLambda.csprojResolveAssemblyReference.cache
+d:\vs_Projects\parseLambda\parseLambda\obj\Debug\parseLambda.csproj.CoreCompileInputs.cache
+d:\vs_Projects\parseLambda\parseLambda\obj\Debug\parseLambda.exe
+d:\vs_Projects\parseLambda\parseLambda\obj\Debug\parseLambda.pdb
