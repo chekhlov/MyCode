@@ -1,0 +1,38 @@
+[class~=reactDatePicker] {
+	height: auto !important;
+	margin-right: 15px;
+}
+
+[class~=reactDatePickerDivClass] { float: left !important; }
+
+[class~=reactDatePickerLabelClass] {
+	float: left !important;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 6px;
+	vertical-align: middle;
+	min-width: 15px;
+	height: 100%;
+	padding-top: 5px;
+}
+
+[class~=reactDatePickerAreaClass] {
+	margin-top: 6px;
+	margin-right: 15px;
+	float: left !important;
+}
+
+.DayPicker-Day--today {
+	color: #006c84;
+	font-weight: bold;
+	background-color: #e8f0f8;
+	border-radius: 50%;
+}
+
+.DayPicker-Day--weekends { color: #ff4500; }
+
+.DayPickerInput input {
+	padding-left: 4px;
+	padding-right: 4px;
+	width: 140px;
+}

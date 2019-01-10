@@ -1,0 +1,108 @@
+.pageHeader {
+	margin-bottom: 30px;
+}
+
+.reduced-font {
+	line-height: 1.4;
+}
+
+#drawCanvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.about {
+	height: 700px;
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+.gradient{
+	position:relative;
+	height:100%;
+}
+
+.gradient:after {
+	content:"";
+	position:absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background: linear-gradient( rgba(255, 255, 255, 1) 0% , rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 1) 100% );
+}
+
+.scroll-up {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	line-height: 16px;
+	text-align: center;
+	/* Starting position */
+	-moz-transform: translateY(650px);
+	-webkit-transform: translateY(650px);
+	transform: translateY(650px);
+	/* Apply animation to this element */
+	-moz-animation: scroll-up 50s linear infinite;
+	-webkit-animation: scroll-up 50s linear infinite;
+	animation: scroll-up 50s linear infinite;
+}
+
+#about-text {
+	font-family: "Segoe UI", "GeezaPro", "DejaVu Serif";
+	line-height: 1.4;
+	font-size: x-large;
+	height: auto;
+	width: 100%;
+}
+
+#about-text > ::ng-deep h1 {
+	color: red;
+	margin-bottom: 1em;
+	margin-top: 3em;
+}
+
+#about-text > ::ng-deep h2 {
+	color: blue;
+	margin-bottom: 1em;
+	margin-top: 2em;
+}
+
+#about-text > ::ng-deep .space {
+	height: 400px;
+}
+
+/* Move it (define the animation) */
+@-moz-keyframes scroll-up {
+	0% {
+		-moz-transform: translateY(650px);
+	}
+	100% {
+		-moz-transform: translateY(-100%);
+	}
+}
+
+@-webkit-keyframes scroll-up {
+	0% {
+		-webkit-transform: translateY(650px);
+	}
+	100% {
+		-webkit-transform: translateY(-100%);
+	}
+}
+
+@keyframes scroll-up {
+	0% {
+		-moz-transform: translateY(650px); /* Browser bug fix */
+		-webkit-transform: translateY(650px); /* Browser bug fix */
+		transform: translateY(650px);
+	}
+	100% {
+		-moz-transform: translateY(-100%); /* Browser bug fix */
+		-webkit-transform: translateY(-100%); /* Browser bug fix */
+		transform: translateY(-100%);
+	}
+}

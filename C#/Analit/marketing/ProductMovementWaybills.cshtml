@@ -1,0 +1,135 @@
+@using Marketing.Controllers
+@using Marketing.Helpers
+@using Marketing.ViewModels
+@model ProductMovementViewModel
+
+@{
+	bool isAggregated = Model.filter.isAggregated;
+	DateTime dateBegin = Model.filter.dateBegin ?? DateTime.Now.Date.AddDays(-6);
+	DateTime dateEnd = Model.filter.dateEnd ?? DateTime.Now;
+	ViewBag.Title = isAggregated ? "Сводный отчёт по накладным" : "Движение товара по накладным";
+	var agColumnsIdList = new ReportFilterDataViewModel("AgColumnsIdList", "agColumnsIds", "Группировка", Model.filter.agColumns ?? new List<ViewModelListItem>());
+}
+<div class="form-group">
+	<ol class="breadcrumb">
+		<li>
+			<a href="@Url.Action("Index", "Home")">Меню</a>
+		</li>
+		<li class="active">@ViewBag.Title</li>
+	</ol>
+</div>
+<h2>@ViewBag.Title</h2>
+<hr>
+<div class="container">
+
+	@using (Html.BeginForm("ProductMovementWaybills", "Report", FormMethod.Post, new {id = "report-form"})) {
+		<div class="filterWrapper paddingtop-16">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-7">
+						<div id="reactFilterRoot">
+						</div>
+					</div>
+					<div class="col-md-5">
+						<img src='@ViewBag.ChartUrl'/>
+						@if (!string.IsNullOrEmpty(ViewBag.AdditionalData)) {
+							<p>
+								<strong>Накладные отсутствуют для поставщиков: </strong>@Html.Raw(ViewBag.AdditionalData)</p>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="infoPanel report-right">
+			<span>Итого <strong>@ViewBag.TotalQuantity</strong> упак. на <strong>@ViewBag.TotalSum</strong> руб. с <strong>@dateBegin.ToShortDateString()</strong> по <strong>@dateEnd.ToShortDateString()</strong></span>
+		</div>
+		<hr>
+		<div class="form-group">
+			<div></div>
+			<script type="text/javascript">
+				if (typeof FilterValues == 'undefined') {
+					FilterValues = new Array();
+				}
+
+				//Здесь нужно собать все значения, которые должны быть учтены при фильтрации
+				function gridVIewBeginCallback(s, e) {
+
+					var inp = $('#reactFilterRoot input:hidden[id]');
+					if (inp != null) {
+						inp.each(function(idx, el) {
+							var id = el.getAttribute('id');
+							e.customArgs[id] = el.value;
+						});
+					}
+
+					e.customArgs["isWaybillReport"] = document.reportFilter.isWaybillReport;
+
+					// Остаток для Grid
+					var func = FilterValues['AgColumnsIdList'];
+					if (func != undefined) {
+						e.customArgs["agColumnsIds"] = func();
+					}
+
+				}
+				document.reportFilter = @Html.Raw(@Model.filter.SerializeJson());
+
+				$(function() {
+					$('#report-form').submit(function(event) {
+						var assortmentType = document.getElementById("AssortmentType");
+						var eventId = document.getElementById("EventId");
+
+						if (assortmentType && Number(assortmentType.value) == 0 && eventId && Number(eventId.value) == 0) {
+							event.preventDefault();
+							submit('Для данного типа ассортимента необхоимо указать мероприятие!', null, 'Продолжить', '');
+						}
+					});
+				});
+
+				function aggrigationStateUpdate(val) {
+					$("[name='isAggregated']").val(String(val));
+					$('#report-form').submit();
+				}
+			</script>
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" @(!isAggregated ? "class=active" : "")>
+					<a class="c-pointer" onclick="aggrigationStateUpdate(false);">Полный отчет</a>
+				</li>
+				<li role="presentation" @(isAggregated ? "class=active" : "")>
+					<a class="c-pointer" onclick="aggrigationStateUpdate(true);">Суммарные данные по юр. лицам</a>
+				</li>
+			</ul>
+
+			<input type="hidden" name="isAggregated" value="@Model.filter.isAggregated.ToString()">
+			<!-- Tab panes -->
+
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active">
+					@if (isAggregated) {
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-7">@Html.Partial("partials/_ProductMovementAggregatedColumnsData", agColumnsIdList)</div>
+										<div class="col-md-4">@Html.Partial("partials/_ProductMovementAggregatedColumnsLogic", agColumnsIdList)</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.Partial("partials/_ProductMovementAggregatedGrid", Model)
+						</div>
+					}
+					else {
+						@Html.Partial("partials/_ProductMovementWaybillsGrid", Model)
+					}
+				</div>
+			</div>
+
+		</div>
+	}
+</div>
+@section Scripts {
+	@Scripts.Render("~/bundles/report")
+}
